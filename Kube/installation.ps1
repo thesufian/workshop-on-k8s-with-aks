@@ -86,8 +86,22 @@ kubectl apply -f .\kube-dashboard-access.yaml
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 helm repo update
 
+#CRATE NAMESPACE ingress-basic
+kubectl create ns ingress-basic
+#OUTPUT:
+#namespace/ingress-basic created
+
 #INSTALL nginx INGRESS CONTROLLER. IT WILL INSTALL TWO INGRESS SERVICEs & ONE DEFAULT BACK-END WHICH RETURNS 'default 404'
 helm install stable/nginx-ingress --set controller.replicaCount=2 --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux --namespace ingress-basic --generate-name
+#OUTPUT:
+#NAME: nginx-ingress-1578724556
+#LAST DEPLOYED: Sat Jan 11 12:35:59 2020
+#NAMESPACE: ingress-basic
+#STATUS: deployed
+#REVISION: 1
+#...
+#...
+#type: kubernetes.io/tls
 
 #TO SEE THE INSTALLED RESOURCES
 kubectl get service -l app=nginx-ingress --namespace ingress-basic
@@ -95,7 +109,7 @@ helm list -n ingress-basic
 
 #GET EXTERNAL IP
 kubectl get service -l app=nginx-ingress --namespace ingress-basic
-$IP='<ip from above command>'
+$IP='<external ip from above command>'
 $DNSNAME='sufian'
 $PUBLICIPID=$(az network public-ip list --query "[?ipAddress!=null]|[?contains(ipAddress, '$IP')].[id]" --output tsv)
 #ASSIGN DNS
@@ -110,10 +124,27 @@ helm install azure-samples/aks-helloworld --namespace ingress-basic --generate-n
 #INSTALL 2ND SERVICE
 helm install azure-samples/aks-helloworld --namespace ingress-basic  --generate-name --set title="AKS Ingress Demo" --set serviceName="ingress-demo"
 
+#ADD INGRESS
+kubectl apply -f .\cluster-ingress.yaml
+
 #INSTALL CERTIFICATE: https://docs.cert-manager.io/en/latest/getting-started/install/kubernetes.html
 # CREATE A NAMESPACE TO RUN CERT-MANAGER IN
 kubectl create namespace cert-manager
 kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v0.11.0/cert-manager.yaml --validate=false
 
+#SEE CLUSTER ISSUER STATUS
+kubectl get all -n cert-manager
+
 #SETUP CLUSTER ISSUER, https://docs.cert-manager.io/en/latest/tasks/issuers/setup-acme/index.html
 kubectl apply -f .\cluster-issuer.yaml
+kubectl get all -n cert-manager
+
+#CREATE CERTIFICATE
+kubectl apply -f .\certificates.yaml
+
+# SEE CERTIFICATE DETAILS
+kubectl get certificates -n ingress-basic
+kubectl get secret -n ingress-basic
+
+#UPDATE INGRESS TO USE CERTIFICATE
+kubectl apply -f .\cluster-ingress.yaml
