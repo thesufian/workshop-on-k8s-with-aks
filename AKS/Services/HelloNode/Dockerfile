@@ -11,5 +11,4 @@ RUN npm install
 COPY Services/HelloNode /app/
 
 EXPOSE 80
-EXPOSE 30002
 CMD [ "node", "server.js" ]

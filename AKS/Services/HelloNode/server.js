@@ -1,6 +1,6 @@
 'use strict';
 var http = require('http');
-var port = process.env.PORT || 30002;
+var port = process.env.PORT || 80;
 
 http.createServer(function (req, res) {
     res.writeHead(200, { 'Content-Type': 'application/json' });
