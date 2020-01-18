@@ -3,3 +3,15 @@
 ################################################################################
 
 /.vs
+/AKS/.vs
+/AKS/obj
+/AKS/HelloWorld/obj
+/AKS/HelloWorld/bin
+/AKS/bin/Debug
+/AKS/HelloNode/bin
+/AKS/HelloNode/obj/Debug
+/AKS/Services/HelloNode/bin
+/AKS/Services/HelloNode/obj
+/AKS/Services/HelloWorld/bin
+/AKS/Services/HelloWorld/obj
+/AKS/Services/obj/Docker
