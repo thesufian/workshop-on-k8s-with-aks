@@ -3,7 +3,7 @@ WORKDIR /app
 
 # Install NPM packages
 COPY Services/HelloNode/package*.json /app/
-#RUN npm set progress=true
+RUN npm set progress=true
 #RUN npm cache clean --force
 RUN npm install
 
@@ -11,4 +11,5 @@ RUN npm install
 COPY Services/HelloNode /app/
 
 EXPOSE 80
+EXPOSE 30002
 CMD [ "node", "server.js" ]
