@@ -148,3 +148,14 @@ kubectl get secret -n ingress-basic
 
 #UPDATE INGRESS TO USE CERTIFICATE
 kubectl apply -f .\cluster-ingress.yaml
+
+
+#########################################
+#########################################
+#CLEAN UP
+#########################################
+#########################################
+kubectl delete namespace ingress-basic
+kubectl delete namespace cert-manager
+#DELETE THE CLUSTER
+az aks delete --name <name> --resource-group <group>

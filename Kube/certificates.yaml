@@ -2,17 +2,17 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   namespace: ingress-basic
-  name: saory3-eastus-cloudapp-azure-com-cert-staging
+  name: sufian-eastus-cloudapp-azure-com-cert-staging
 spec:
-  secretName: saory3-eastus-cloudapp-azure-com-staging
+  secretName: sufian-eastus-cloudapp-azure-com-staging
   dnsNames:
-  - saory3.eastus.cloudapp.azure.com
+  - sufian.eastus.cloudapp.azure.com
   acme:
     config:
     - http01:
         ingressClass: nginx
       domains:
-      - saory3.eastus.cloudapp.azure.com
+      - sufian.eastus.cloudapp.azure.com
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer  
